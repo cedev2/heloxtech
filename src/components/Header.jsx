@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Phone, Mail, MapPin, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import { Menu, X, Phone, Mail, MapPin, Facebook, Twitter, Linkedin, Instagram, Lock } from 'lucide-react';
 import { content } from '../constants/content';
 
-const TopBar = () => {
+const TopBar = ({ scrolled }) => {
   return (
-    <div className="top-bar bg-gradient" style={{ padding: '0.5rem 0', fontSize: '0.875rem' }}>
+    <div className="top-bar bg-gradient" style={{
+      padding: '0.5rem 0',
+      fontSize: '0.875rem',
+      position: 'fixed',
+      top: scrolled ? '-50px' : 0,
+      left: 0,
+      right: 0,
+      height: '40px',
+      zIndex: 1001,
+      display: 'flex',
+      alignItems: 'center',
+      transition: 'all 0.4s ease'
+    }}>
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -20,39 +32,47 @@ const TopBar = () => {
             <span>{content.contact.phone}</span>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <a href="#"><Facebook size={16} /></a>
-          <a href="#"><Twitter size={16} /></a>
-          <a href="#"><Linkedin size={16} /></a>
-          <a href="#"><Instagram size={16} /></a>
+        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '1rem', borderRight: '1px solid rgba(255,255,255,0.2)', paddingRight: '1rem' }}>
+            <a href="#" style={{ color: 'white' }}><Facebook size={16} /></a>
+            <a href="#" style={{ color: 'white' }}><Twitter size={16} /></a>
+            <a href="#" style={{ color: 'white' }}><Linkedin size={16} /></a>
+            <a href="#" style={{ color: 'white' }}><Instagram size={16} /></a>
+          </div>
+          <a href="/admin" title="Staff Portal" style={{
+            color: 'var(--accent)',
+            display: 'flex',
+            alignItems: 'center',
+            textDecoration: 'none',
+            transition: 'transform 0.2s',
+          }}
+            onMouseOver={e => e.currentTarget.style.transform = 'scale(1.2)'}
+            onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+          >
+            <Lock size={16} />
+          </a>
         </div>
       </div>
     </div>
   );
 };
 
-const Navbar = () => {
+const Navbar = ({ scrolled }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`} style={{
-      position: 'sticky',
-      top: 0,
+      position: 'fixed',
+      top: scrolled ? 0 : '40px', // Adjust based on TopBar height
+      left: 0,
+      right: 0,
       zIndex: 1000,
-      background: scrolled ? 'var(--glass)' : 'white',
-      backdropFilter: scrolled ? 'blur(10px)' : 'none',
-      boxShadow: scrolled ? 'var(--shadow)' : 'none',
-      transition: 'var(--transition)',
-      padding: scrolled ? '0.2rem 0' : '0.5rem 0'
+      background: scrolled ? 'rgba(255, 255, 255, 0.8)' : 'transparent',
+      backdropFilter: scrolled ? 'blur(12px)' : 'none',
+      borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+      boxShadow: scrolled ? '0 4px 30px rgba(0, 0, 0, 0.1)' : 'none',
+      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+      padding: scrolled ? '0.5rem 0' : '1.5rem 0'
     }}>
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -68,13 +88,17 @@ const Navbar = () => {
         </a>
 
         {/* Desktop Menu */}
-        <div className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+        <div className="desktop-menu" style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
           {content.navLinks.map((link) => (
-            <a key={link.name} href={link.href} style={{ fontWeight: 600, color: 'var(--text-dark)' }} className="nav-link">
+            <a key={link.name} href={link.href} style={{
+              fontWeight: 600,
+              color: scrolled ? 'var(--text-dark)' : 'white',
+              textShadow: scrolled ? 'none' : '0 2px 4px rgba(0,0,0,0.3)'
+            }} className="nav-link">
               {link.name}
             </a>
           ))}
-          <button className="btn btn-primary">Hire Us</button>
+          <a href="#contact" className="btn btn-primary" style={{ textDecoration: 'none' }}>Hire Us</a>
         </div>
 
         {/* Mobile Toggle */}
@@ -112,18 +136,43 @@ const Navbar = () => {
         @media (max-width: 992px) {
           .desktop-menu { display: none !important; }
           .mobile-toggle { display: block !important; }
+          .navbar { top: 0 !important; padding: 1rem 0 !important; background: ${scrolled ? 'rgba(255,255,255,0.95)' : 'white'} !important; }
         }
+        .nav-link { transition: all 0.3s ease; position: relative; }
         .nav-link:hover { color: var(--accent) !important; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
       `}} />
     </nav>
   );
 };
 
-const Header = () => (
-  <header>
-    <TopBar />
-    <Navbar />
-  </header>
-);
+const Header = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <header>
+      <TopBar scrolled={scrolled} />
+      <Navbar scrolled={scrolled} />
+    </header>
+  );
+};
 
 export default Header;

@@ -14,7 +14,7 @@ const Footer = () => {
                 }}>
                     {/* Company Bio */}
                     <div style={{ gridColumn: 'span 2' }}>
-                        <a href="#" style={{ display: 'block', marginBottom: '1.5rem' }}>
+                        <a href="#home" style={{ display: 'block', marginBottom: '1.5rem' }}>
                             <img src="/logo.png" alt={content.brand.name} style={{ height: '120px', width: 'auto', filter: 'brightness(0) invert(1)' }} />
                         </a>
                         <p style={{ opacity: 0.7, lineHeight: 1.8, maxWidth: '400px' }}>

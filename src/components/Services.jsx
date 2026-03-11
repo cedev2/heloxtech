@@ -61,7 +61,7 @@ const Services = () => {
                             </div>
                             <h3 style={{ marginBottom: '1rem' }}>{service.title}</h3>
                             <p style={{ color: '#666', marginBottom: '1.5rem' }}>{service.desc}</p>
-                            <a href="#" style={{ color: 'var(--primary)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                            <a href="#contact" style={{ color: 'var(--primary)', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', textDecoration: 'none' }}>
                                 Get More Info <span style={{ color: 'var(--accent)' }}>&rarr;</span>
                             </a>
                         </motion.div>

@@ -17,7 +17,7 @@ export const content = {
         }
     },
     navLinks: [
-        { name: 'Home', href: '#' },
+        { name: 'Home', href: '#home' },
         { name: 'About Us', href: '#about' },
         { name: 'Our Services', href: '#services' },
         { name: 'Our Products', href: '#products' },

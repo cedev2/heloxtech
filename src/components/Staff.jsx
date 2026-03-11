@@ -1,12 +1,21 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { Phone, Users, ChevronRight, ChevronLeft, User } from 'lucide-react';
 import { content } from '../constants/content';
-import { User, ChevronLeft, ChevronRight, Phone } from 'lucide-react';
 
 const Staff = () => {
+    const [staff, setStaff] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [direction, setDirection] = useState(0);
     const [visibleItems, setVisibleItems] = useState(3);
+
+    useEffect(() => {
+        fetch('http://localhost/HT/backend/api/staff.php')
+            .then(res => res.json())
+            .then(data => setStaff(data))
+            .catch(err => console.error("Error fetching staff:", err));
+    }, []);
+
+    const team = staff.length > 0 ? staff : content.staff;
 
     useEffect(() => {
         const handleResize = () => {
@@ -19,13 +28,12 @@ const Staff = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const totalItems = content.staff.length;
+    const totalItems = team.length;
     const maxIndex = Math.max(0, totalItems - visibleItems);
 
     const paginate = (newDirection) => {
         const nextIndex = currentIndex + newDirection;
         if (nextIndex >= 0 && nextIndex <= maxIndex) {
-            setDirection(newDirection);
             setCurrentIndex(nextIndex);
         }
     };
@@ -76,10 +84,10 @@ const Staff = () => {
                                 gap: '2.5rem',
                                 width: '100%'
                             }}
-                            animate={{ x: `-${currentIndex * (100 / visibleItems + 1)}%` }}
+                            animate={{ x: `-${currentIndex * (100 / visibleItems)}%` }}
                             transition={{ type: 'spring', damping: 25, stiffness: 120 }}
                         >
-                            {content.staff.map((member, index) => (
+                            {team.map((member, index) => (
                                 <div
                                     key={index}
                                     style={{
@@ -103,12 +111,12 @@ const Staff = () => {
                                     }}>
                                         {member.image ? (
                                             <img
-                                                src={member.image}
+                                                src={member.image.startsWith('/uploads') ? `http://localhost/HT/backend${member.image}` : member.image}
                                                 alt={member.name}
                                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                                 onError={(e) => {
                                                     e.target.style.display = 'none';
-                                                    e.target.nextSibling.style.display = 'flex';
+                                                    if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
                                                 }}
                                             />
                                         ) : null}

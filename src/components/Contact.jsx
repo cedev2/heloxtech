@@ -62,24 +62,46 @@ const Contact = () => {
                         borderRadius: '2rem',
                         boxShadow: 'var(--shadow-lg)'
                     }}>
-                        <form style={{ display: 'grid', gap: '1.5rem' }}>
+                        <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            const formData = new FormData(e.target);
+                            const data = {
+                                full_name: formData.get('full_name'),
+                                email: formData.get('email'),
+                                message: formData.get('message')
+                            };
+                            try {
+                                const res = await fetch('http://localhost/HT/backend/api/messages.php', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(data)
+                                });
+                                const result = await res.json();
+                                if (result.success) {
+                                    alert('Message sent successfully!');
+                                    e.target.reset();
+                                }
+                            } catch (err) {
+                                alert('Error sending message.');
+                            }
+                        }} style={{ display: 'grid', gap: '1.5rem' }}>
                             <div>
                                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Full Name</label>
-                                <input type="text" placeholder="Your Name" style={{
+                                <input name="full_name" type="text" placeholder="Your Name" required style={{
                                     width: '100%', padding: '0.75rem 1rem', borderRadius: '0.5rem',
                                     border: '1px solid #ddd', background: 'var(--bg-alt)'
                                 }} />
                             </div>
                             <div>
                                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Email Address</label>
-                                <input type="email" placeholder="your email@example.com" style={{
+                                <input name="email" type="email" placeholder="your email@example.com" required style={{
                                     width: '100%', padding: '0.75rem 1rem', borderRadius: '0.5rem',
                                     border: '1px solid #ddd', background: 'var(--bg-alt)'
                                 }} />
                             </div>
                             <div>
                                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Message</label>
-                                <textarea rows="4" placeholder="How can we help you?" style={{
+                                <textarea name="message" rows="4" placeholder="How can we help you?" required style={{
                                     width: '100%', padding: '0.75rem 1rem', borderRadius: '0.5rem',
                                     border: '1px solid #ddd', background: 'var(--bg-alt)', resize: 'none'
                                 }}></textarea>

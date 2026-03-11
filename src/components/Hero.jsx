@@ -4,7 +4,7 @@ import { content } from '../constants/content';
 
 const Hero = () => {
     return (
-        <section className="hero bg-gradient" style={{
+        <section id="home" className="hero bg-gradient" style={{
             padding: '8rem 0',
             position: 'relative',
             overflow: 'hidden',
@@ -125,8 +125,8 @@ const Hero = () => {
                         transition={{ duration: 0.5, delay: 0.6 }}
                         style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}
                     >
-                        <button className="btn btn-primary">Get Started</button>
-                        <button className="btn btn-outline" style={{ color: 'white', borderColor: 'white' }}>Our Services</button>
+                        <a href="#contact" className="btn btn-primary" style={{ textDecoration: 'none' }}>Get Started</a>
+                        <a href="#services" className="btn btn-outline" style={{ color: 'white', borderColor: 'white', textDecoration: 'none' }}>Our Services</a>
                     </motion.div>
                 </div>
             </div>
