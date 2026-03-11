@@ -5,7 +5,7 @@ import { content } from '../constants/content';
 const Hero = () => {
     return (
         <section id="home" className="hero bg-gradient" style={{
-            padding: '8rem 0',
+            padding: '12rem 0 8rem 0',
             position: 'relative',
             overflow: 'hidden',
             minHeight: '80vh',

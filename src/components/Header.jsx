@@ -67,12 +67,12 @@ const Navbar = ({ scrolled }) => {
       left: 0,
       right: 0,
       zIndex: 1000,
-      background: scrolled ? 'rgba(255, 255, 255, 0.8)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(12px)' : 'none',
-      borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+      background: scrolled ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(12px)',
+      borderBottom: scrolled ? '1px solid rgba(0, 0, 0, 0.05)' : 'none',
       boxShadow: scrolled ? '0 4px 30px rgba(0, 0, 0, 0.1)' : 'none',
       transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-      padding: scrolled ? '0.5rem 0' : '1.5rem 0'
+      padding: scrolled ? '0.4rem 0' : '0.75rem 0'
     }}>
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -80,7 +80,7 @@ const Navbar = ({ scrolled }) => {
             src="/logo.png"
             alt={content.brand.name}
             style={{
-              height: scrolled ? '60px' : '90px',
+              height: scrolled ? '50px' : '65px',
               width: 'auto',
               transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
             }}
@@ -92,8 +92,8 @@ const Navbar = ({ scrolled }) => {
           {content.navLinks.map((link) => (
             <a key={link.name} href={link.href} style={{
               fontWeight: 600,
-              color: scrolled ? 'var(--text-dark)' : 'white',
-              textShadow: scrolled ? 'none' : '0 2px 4px rgba(0,0,0,0.3)'
+              color: 'var(--text-dark)',
+              textShadow: 'none'
             }} className="nav-link">
               {link.name}
             </a>
@@ -102,7 +102,7 @@ const Navbar = ({ scrolled }) => {
         </div>
 
         {/* Mobile Toggle */}
-        <div className="mobile-toggle" style={{ display: 'none', cursor: 'pointer' }} onClick={() => setIsOpen(!isOpen)}>
+        <div className="mobile-toggle" style={{ display: 'none', cursor: 'pointer', color: 'var(--text-dark)' }} onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </div>
       </div>
